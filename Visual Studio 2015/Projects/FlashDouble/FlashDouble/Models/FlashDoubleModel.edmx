@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FlashDoubleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="ModelID" Type="int" />
+          <Property Name="PhotographerID" Type="int" />
+          <Property Name="LocationID" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BookingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationID" />
+          </Key>
+          <Property Name="LocationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Street Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Last Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Height" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Photographer">
+          <Key>
+            <PropertyRef Name="PhotographerID" />
+          </Key>
+          <Property Name="PhotographerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Last Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="50" />
+          <Property Name="Model/Type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Booking_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_Model">
+          <End Role="Model" Type="Self.Model" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_Photographer">
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographer">
+              <PropertyRef Name="PhotographerID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="PhotographerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlashDoubleModelStoreContainer">
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Model" EntityType="Self.Model" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Photographer" EntityType="Self.Photographer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Booking_Location" Association="Self.FK_Booking_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Model" Association="Self.FK_Booking_Model">
+            <End Role="Model" EntitySet="Model" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Photographer" Association="Self.FK_Booking_Photographer">
+            <End Role="Photographer" EntitySet="Photographer" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FlashDoubleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BookingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Booking_Location" FromRole="Booking" ToRole="Location" />
+          <NavigationProperty Name="Model" Relationship="Self.FK_Booking_Model" FromRole="Booking" ToRole="Model" />
+          <NavigationProperty Name="Photographer" Relationship="Self.FK_Booking_Photographer" FromRole="Booking" ToRole="Photographer" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationID" />
+          </Key>
+          <Property Name="LocationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Street_Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_Location" FromRole="Location" ToRole="Booking" />
+        </EntityType>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Height" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_Model" FromRole="Model" ToRole="Booking" />
+        </EntityType>
+        <EntityType Name="Photographer">
+          <Key>
+            <PropertyRef Name="PhotographerID" />
+          </Key>
+          <Property Name="PhotographerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Model_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_Photographer" FromRole="Photographer" ToRole="Booking" />
+        </EntityType>
+        <Association Name="FK_Booking_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Booking_Model">
+          <End Role="Model" Type="Self.Model" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Booking_Photographer">
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="FlashDoubleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bookings" EntityType="Self.Booking" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Models" EntityType="Self.Model" />
+          <EntitySet Name="Photographers" EntityType="Self.Photographer" />
+          <AssociationSet Name="FK_Booking_Location" Association="Self.FK_Booking_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Model" Association="Self.FK_Booking_Model">
+            <End Role="Model" EntitySet="Models" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Photographer" Association="Self.FK_Booking_Photographer">
+            <End Role="Photographer" EntitySet="Photographers" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FlashDoubleModelStoreContainer" CdmEntityContainer="FlashDoubleEntities">
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="FlashDoubleModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="FlashDoubleModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Street_Address" ColumnName="Street Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Models">
+            <EntityTypeMapping TypeName="FlashDoubleModel.Model">
+              <MappingFragment StoreEntitySet="Model">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="First_Name" ColumnName="First Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photographers">
+            <EntityTypeMapping TypeName="FlashDoubleModel.Photographer">
+              <MappingFragment StoreEntitySet="Photographer">
+                <ScalarProperty Name="PhotographerID" ColumnName="PhotographerID" />
+                <ScalarProperty Name="First_Name" ColumnName="First Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Model_Type" ColumnName="Model/Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Booking_Location" TypeName="FlashDoubleModel.FK_Booking_Location" StoreEntitySet="Booking">
+            <EndProperty Name="Location">
+              <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+            </EndProperty>
+            <EndProperty Name="Booking">
+              <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="LocationID" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Booking_Model" TypeName="FlashDoubleModel.FK_Booking_Model" StoreEntitySet="Booking">
+            <EndProperty Name="Model">
+              <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+            </EndProperty>
+            <EndProperty Name="Booking">
+              <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="ModelID" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Booking_Photographer" TypeName="FlashDoubleModel.FK_Booking_Photographer" StoreEntitySet="Booking">
+            <EndProperty Name="Photographer">
+              <ScalarProperty Name="PhotographerID" ColumnName="PhotographerID" />
+            </EndProperty>
+            <EndProperty Name="Booking">
+              <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="PhotographerID" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
