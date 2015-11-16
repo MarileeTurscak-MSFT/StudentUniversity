@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "WeatherJS";
+}
+
+<h2>An Always Accurate Weather Forecast</h2>
+
+<p id="city"></p>
+<p id="temp"></p>
+<p id="humidity"></p>
+<p id="weather"></p>
+<button>
+    Click Me
+</button>
+
+<script>
+    $(document).ready(
+
+        function () {
+            $("button").click(function () { 
+            //alert("Yay! I work!");
+            //Get URL response from weather API using AJAX.
+            //896ac4e38ebe557d3324703e0c5b4d13
+                $.get("http://api.openweathermap.org/data/2.5/weather?q=Portland&APPID=896ac4e38ebe557d3324703e0c5b4d13&units=imperial", function (response) {
+                    //response
+                    console.log(response);
+
+                    $("#city").text("City: " + response.name);
+                    $("#temp").text("Temperature: " + response.main.temp + "F");
+                    $("#humidity").text("Humidity: " + response.main.humidity);
+                    $("#weather").text("Visibility: " + response.weather[0].description);
+            });
+            });
+            
+        });
+
+</script>
